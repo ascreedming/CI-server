@@ -115,7 +115,10 @@ int main(int argc, char* argv[])
 {
     std::string address = "0.0.0.0";
     int port = 8080;
-    int listen_socket = ConnectServer(address, port, 1);
+    int maximum_clients = 1;
+    size_t max_size_to_receive = 1024;
+
+    int listen_socket = ConnectServer(address, port, maximum_clients);
 
     std::cout << "Server connected. Waiting for clients." << std::endl;
 
@@ -132,7 +135,7 @@ int main(int argc, char* argv[])
             throw std::runtime_error("Couldn't accept request from client. Errno: " + std::to_string(errno) + ".");
 
 
-        std::cout << Receive(client_socket, 1024) << std::endl;
+        std::cout << Receive(client_socket, max_size_to_receive) << std::endl;
     }
 
 

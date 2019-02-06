@@ -12,10 +12,7 @@ set(TESTS     ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 set(INCLUDE   ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 
-set(
-    SOURCES
-    source/main.cpp
-)
+file(GLOB SOURCES ${SOURCE}/*.cpp)
 
 add_executable(WebHook ${SOURCES})
 target_include_directories(WebHook PRIVATE include/)
