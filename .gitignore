@@ -1,3 +1,13 @@
+# Clion
+.idea/
+
+# Max OSX
+.DS_Store
+
+# CMake
+cmake-build-debug/
+build/  # If running CMake manually.
+
 # Prerequisites
 *.d
 
