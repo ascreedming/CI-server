@@ -130,12 +130,12 @@ report compileCMake(std::string sourceFolder, std::string buildFolder)
     report rep;
     if (cmd_output.find("Generating done") != std::string::npos)
     {
-        rep.message = "CMake compiled fine";
+        rep.message = "CMake compiled fine.";
         rep.errorcode = 0;
     }
     else 
     {
-        rep.message = "CMake din't compile";
+        rep.message = "CMake din't compile.";
         rep.errorcode = 4;
     }
 
