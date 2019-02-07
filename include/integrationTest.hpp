@@ -38,25 +38,31 @@ std::string exec(const char* cmd) {
 
 
 // Clone the current repo into a selected folder
-report cloning(std::string sourceFolder, std::string repo)
+report cloning(std::string sourceFolder, std::string cacheFolder, std::string repo)
 {
-    std::string cmd = "git clone " + repo + " " + sourceFolder;
+    // Clone the repo and save the output to a cache
+    std::string cmd = "git clone --progress " + repo + " " + sourceFolder + " 2>  " + cacheFolder + "/git_clone_cache.txt";
+    system(cmd.c_str());
+
+    // Get the info from the cach into the method
+    cmd = "cat " + cacheFolder + "/git_clone_cache.txt";
     std::string cmd_output = exec(cmd.c_str());
 
+    // Determine if the cloning went alright
     report rep;
-    if (cmd_output.find("done.") != std::string::npos)
+    if (cmd_output.find("Checking connectivity... done.") != std::string::npos)
     {
         rep.message = "Cloning done.";
         rep.errorcode = 0;
     }
     else if (cmd_output.find("fatal:") != std::string::npos)
     {
-        rep.message = "Fatal\n";
+        rep.message = "Fatal error while cloning.";
         rep.errorcode = 2;
     }
     else
     {
-        rep.message = "Unknown Error in cloning";
+        rep.message = "Unknown error while cloning.";
         rep.errorcode = 1;
     }
 
@@ -108,13 +114,9 @@ report merge(std::string sourceFolder, std::string targetBranch)
 // Determine if CMake could compile the code
 report compileCMake(std::string sourceFolder, std::string buildFolder)
 {
-    // Create build folder
-    std::string cmd = "mkdir " + buildFolder;
-    std::string cmd_output = exec(cmd.c_str());
-
     // Performe cmake
-    cmd = "cmake -B" + buildFolder + " -H" + sourceFolder;
-    cmd_output = exec(cmd.c_str());
+    std::string cmd = "cmake -B" + buildFolder + " -H" + sourceFolder;
+    std::string cmd_output = exec(cmd.c_str());
 
     //std::cerr << cmd_output; // USED IN DEBUGGING
     report rep;
@@ -174,21 +176,21 @@ report runUnittest(std::string buildFolder)
     return rep;
 }
 
-report integrationTest()
+report integrationTest(std::string commit, std::string repo, std::string targetBranch)
 {
-    // Should be in the input
-    std::string commit = "486caa7143d20d47a0afb5dbd3b044bca28ab30d";
-    std::string repo = "git@github.com:Naxaes/CI-server.git";
-    std::string targetBranch = "master";
-
     // Folders creatade during testing
     std::string buildFolder = "./temp/build";
     std::string sourceFolder = "./temp/src";
+    std::string cacheFolder = "./temp/cache";
+
+    // Create folders
+    std::string cmd = "mkdir -p " + buildFolder + " " + sourceFolder + " " + cacheFolder;
+    std::string cmd_output = exec(cmd.c_str());
 
     std::array<report, 6> reports;
 
     // Clone the repo into 'sourceFolder'
-    reports[0] = cloning(sourceFolder, repo);
+    reports[0] = cloning(sourceFolder, cacheFolder, repo);
     if (reports[0].errorcode != 0)
     {
         // something is not correct
