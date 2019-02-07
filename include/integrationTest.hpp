@@ -172,12 +172,12 @@ report runUnittest(std::string buildFolder)
     report rep;
     if (cmd_output.find("PASSED") != std::string::npos)
     {
-        rep.message = "Passed all unittests";
+        rep.message = "Passed all unittests.";
         rep.errorcode = 0;
     }
     else 
     {
-        rep.message = "Failed unittests";
+        rep.message = "Failed unittests.";
         rep.errorcode = 6;
     }
     
