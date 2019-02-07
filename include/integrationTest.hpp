@@ -58,7 +58,7 @@ report cloning(std::string sourceFolder, std::string cacheFolder, std::string re
     else if (cmd_output.find("fatal:") != std::string::npos)
     {
         rep.message = "Fatal error while cloning.";
-        rep.errorcode = 2;
+        rep.errorcode = 1;
     }
     else
     {
@@ -75,15 +75,17 @@ report checkout(std::string sourceFolder, std::string commit)
     std::string cmd = "git --git-dir " + sourceFolder + "/.git checkout " + commit;
     std::string cmd_output = exec(cmd.c_str());
 
+    // TODO(fredrik): the find should determine the commit id
     report rep;
     if (cmd_output.find("HEAD is now at") != std::string::npos)
     {
-        rep.message = "We could set HEAD to commit";
-        rep.errorcode = 1;
+        rep.message = "We could set HEAD to commit.";
+        rep.errorcode = 0;
     }
     else
     {
-        std::cerr << "Unknown Error in git checkout";
+        rep.message = "Unknown Error while git checkout";
+        rep.errorcode = 2;
     }
 
     return rep;
@@ -105,7 +107,7 @@ report merge(std::string sourceFolder, std::string targetBranch)
     else
     {
         rep.message = "Unkown error in merge";
-        rep.errorcode = 1;
+        rep.errorcode = 3;
     }
 
     return rep;
@@ -128,7 +130,7 @@ report compileCMake(std::string sourceFolder, std::string buildFolder)
     else 
     {
         rep.message = "CMake din't compile";
-        rep.errorcode = 0;
+        rep.errorcode = 4;
     }
 
     return rep;
@@ -149,7 +151,7 @@ report compileMake(std::string buildFolder)
     else 
     {
         rep.message = "Make din't compile";
-        rep.errorcode = 1;
+        rep.errorcode = 5;
     }
 
     return rep;
@@ -170,7 +172,7 @@ report runUnittest(std::string buildFolder)
     else 
     {
         rep.message = "Failed unittests";
-        rep.errorcode = 1;
+        rep.errorcode = 6;
     }
     
     return rep;
