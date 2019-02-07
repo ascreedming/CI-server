@@ -9,7 +9,7 @@
 
 
 // report checkout(std::string sourceFolder, std::string commit)
-TEST(cloning, correctly)
+TEST(checkout, correctly)
 {
     // Folders creatade during testing
     std::string buildFolder = "./temp/build";
@@ -28,7 +28,7 @@ TEST(cloning, correctly)
     // mock test in future
     cloning(sourceFolder, cacheFolder, repo);
 
-    report r = checkout(sourceFolder, commit);
+    report r = checkout(sourceFolder, cacheFolder, commit);
     
 
     EXPECT_STREQ("We could set HEAD to commit.", r.message.c_str());
@@ -41,7 +41,7 @@ TEST(cloning, correctly)
 
 /*
 // report checkout(std::string sourceFolder, std::string commit)
-TEST(cloning, fatal)
+TEST(checkout, fatal)
 {
     // Folders creatade during testing
     std::string buildFolder = "./temp/build";
