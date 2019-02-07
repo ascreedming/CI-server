@@ -11,13 +11,48 @@
 // report cloning(std::string sourceFolder, std::string repo)
 TEST(cloning, correctly)
 {
-    std::string sourceFolder = "./temp";
-    std::string repo = "git@github.com:Naxaes/CI-server.git";
+    // Folders creatade during testing
+    std::string buildFolder = "./temp/build";
+    std::string sourceFolder = "./temp/src";
+    std::string cacheFolder = "./temp/cache";
 
-    report r = cloning(sourceFolder, repo);
+    // Create folders
+    std::string cmd = "mkdir -p " + buildFolder + " " + sourceFolder + " " + cacheFolder;
+    std::string cmd_output = exec(cmd.c_str());
+
+
+    std::string repo = "git@github.com:Pihlqvist/ci_test.git";
+
+    report r = cloning(sourceFolder, cacheFolder, repo);
 
     EXPECT_STREQ("Cloning done.", r.message.c_str());
     EXPECT_EQ(0, r.errorcode);
+
+    // Cleanup
+    system("rm -rf ./temp");
+}
+
+
+
+// report cloning(std::string sourceFolder, std::string repo)
+TEST(cloning, fatal)
+{
+    // Folders creatade during testing
+    std::string buildFolder = "./temp/build";
+    std::string sourceFolder = "./temp/src";
+    std::string cacheFolder = "./temp/cache";
+
+    // Create folders
+    std::string cmd = "mkdir -p " + buildFolder + " " + sourceFolder + " " + cacheFolder;
+    std::string cmd_output = exec(cmd.c_str());
+
+
+    std::string repo = "git@github.com:Pihlqvist/ci_test_WRONG.git";
+
+    report r = cloning(sourceFolder, cacheFolder, repo);
+
+    EXPECT_STREQ("Fatal error while cloning.", r.message.c_str());
+    EXPECT_EQ(2, r.errorcode);
 
     // Cleanup
     system("rm -rf ./temp");
