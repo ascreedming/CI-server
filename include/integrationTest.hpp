@@ -151,12 +151,12 @@ report compileMake(std::string buildFolder)
     report rep;
     if (cmd_output.find("100%") != std::string::npos)
     {
-        rep.message = "Make compiled fine";
+        rep.message = "Make compiled fine.";
         rep.errorcode = 0;
     }
     else 
     {
-        rep.message = "Make din't compile";
+        rep.message = "Make din't compile.";
         rep.errorcode = 5;
     }
 
