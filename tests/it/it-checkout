@@ -22,7 +22,7 @@ TEST(checkout, correctly)
 
 
     std::string repo = "git@github.com:Pihlqvist/ci_test.git";
-    std::string commit = "c78f6147592663bdf057d0382ca883df3eff7082";
+    std::string commit = "6cc7e58d7cb0e4b7c06eee65f1f49b336050db22";
 
     // Assuming in this test that cloning works correcly, should be changed to a 
     // mock test in future
