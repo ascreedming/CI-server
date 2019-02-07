@@ -205,7 +205,7 @@ report integrationTest(std::string commit, std::string repo, std::string targetB
     }
 
     // Checkout the given 'commit'
-    checkout(sourceFolder, commit);
+    checkout(sourceFolder, cacheFolder, commit);
     if (reports[1].errorcode != 0)
     {
         // something is not correct
