@@ -171,7 +171,7 @@ report runUnittest(std::string buildFolder)
     return rep;
 }
 
-void integrationTest()
+report integrationTest()
 {
     // Should be in the input
     std::string commit = "486caa7143d20d47a0afb5dbd3b044bca28ab30d";
@@ -182,34 +182,71 @@ void integrationTest()
     std::string buildFolder = "../temp/build";
     std::string sourceFolder = "../temp/src";
 
+    std::array<report, 6> reports;
+
     // Clone the repo into 'sourceFolder'
-    cloning(sourceFolder, repo);
+    reports[0] = cloning(sourceFolder, repo);
+    if (reports[0].errorcode != 0)
+    {
+        // something is not correct
+        return reports[0];
+    }
 
     // Checkout the given 'commit'
     checkout(sourceFolder, commit);
+    if (reports[1].errorcode != 0)
+    {
+        // something is not correct
+        return reports[1];
+    }
 
     // Performe a merge into 'targetBranch' to see if it can be done without issue
     merge(sourceFolder, targetBranch);
-    
+    if (reports[2].errorcode != 0)
+    {
+        // something is not correct
+        return reports[2];
+    }    
+
     // Compile the code with 'CMake'
     compileCMake(sourceFolder, buildFolder);
+    if (reports[3].errorcode != 0)
+    {
+        // something is not correct
+        return reports[3];
+    }
 
     // Comple the code with 'make'
     compileMake(buildFolder);
+    if (reports[4].errorcode != 0)
+    {
+        // something is not correct
+        return reports[4];
+    }
 
     // Performe unittest
     runUnittest(buildFolder);
+    if (reports[5].errorcode != 0)
+    {
+        // something is not correct
+        return reports[5];
+    }
 
     // Cleanup
     exec("rm -rf ../temp");
 
 
     // Report results
+    return {0, "Everthing is good"};
 }
+
 
 int main()
 {
-    integrationTest();
+    report r = integrationTest();
+
+    std::cout << "message: [" + r.message + "]\n";
+    std::cout << "ecode:   [" + std::to_string(r.errorcode) + "]\n";
 
     return 0;
 }
