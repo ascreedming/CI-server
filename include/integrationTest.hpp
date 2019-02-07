@@ -70,9 +70,14 @@ report cloning(std::string sourceFolder, std::string cacheFolder, std::string re
 }
 
 // Checkout the given 'commit'
-report checkout(std::string sourceFolder, std::string commit)
+report checkout(std::string sourceFolder, std::string cacheFolder, std::string commit)
 {
-    std::string cmd = "git --git-dir " + sourceFolder + "/.git checkout " + commit;
+    // Checkout commit and save output to cache
+    std::string cmd = "git --git-dir " + sourceFolder + "/.git checkout " + commit + " 2>  " + cacheFolder + "/git_checkout_cache.txt";
+    system(cmd.c_str());
+
+    // Get the info from the cach into the method
+    cmd = "cat " + cacheFolder + "/git_checkout_cache.txt";
     std::string cmd_output = exec(cmd.c_str());
 
     // TODO(fredrik): the find should determine the commit id
