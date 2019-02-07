@@ -1,5 +1,5 @@
-#ifndef INCLUDE_INTEGRATION_TEST_
-#define INCLUDE_INTEGRATION_TEST_
+#ifndef INCLUDE_INTEGRATIONTEST_H_
+#define INCLUDE_INTEGRATIONTEST_H_
 
 #include <cstdio>
 #include <stdio.h>
@@ -202,46 +202,58 @@ report integrationTest(std::string commit, std::string repo, std::string targetB
     if (reports[0].errorcode != 0)
     {
         // something is not correct
+        std::cerr << "cloning fail\n";
+        exec("rm -rf ./temp");
         return reports[0];
     }
 
     // Checkout the given 'commit'
-    checkout(sourceFolder, cacheFolder, commit);
+    reports[1] = checkout(sourceFolder, cacheFolder, commit);
     if (reports[1].errorcode != 0)
     {
         // something is not correct
+        std::cerr << "checkout fail\n";
+        exec("rm -rf ./temp");
         return reports[1];
     }
 
     // Performe a merge into 'targetBranch' to see if it can be done without issue
-    merge(sourceFolder, targetBranch);
+    reports[2] = merge(sourceFolder, targetBranch);
     if (reports[2].errorcode != 0)
     {
         // something is not correct
+        std::cerr << "merge fail\n";
+        exec("rm -rf ./temp");
         return reports[2];
     }    
 
     // Compile the code with 'CMake'
-    compileCMake(sourceFolder, buildFolder);
+    reports[3] = compileCMake(sourceFolder, buildFolder);
     if (reports[3].errorcode != 0)
     {
         // something is not correct
+        std::cerr << "compileCMake fail\n";
+        exec("rm -rf ./temp");
         return reports[3];
     }
 
     // Comple the code with 'make'
-    compileMake(buildFolder);
+    reports[4] = compileMake(buildFolder);
     if (reports[4].errorcode != 0)
     {
         // something is not correct
+        std::cerr << "compileMake fail\n";
+        exec("rm -rf ./temp");
         return reports[4];
     }
 
     // Performe unittest
-    runUnittest(buildFolder);
+    reports[5] = runUnittest(buildFolder);
     if (reports[5].errorcode != 0)
     {
         // something is not correct
+        std::cerr << "runUnittest fail\n";
+        exec("rm -rf ./temp");
         return reports[5];
     }
 
@@ -250,8 +262,12 @@ report integrationTest(std::string commit, std::string repo, std::string targetB
 
 
     // Report results
-    return {0, "Everthing is good"};
+    report rep;
+    rep.message = "Everthing is good.";
+    rep.errorcode = 0;
+
+    return rep;
 }
 
 
-#endif  // INCLUDE_INTEGRATION_TEST_
+#endif  // INCLUDE_INTEGRATIONTEST_H_
