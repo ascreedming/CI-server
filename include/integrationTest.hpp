@@ -74,11 +74,11 @@ report checkout(std::string sourceFolder, std::string cacheFolder, std::string c
 {
     // Checkout commit and save output to cache
     std::string cmd = "git --git-dir " + sourceFolder + "/.git checkout " + commit + " 2>  " + cacheFolder + "/git_checkout_cache.txt";
-    system(cmd.c_str());
+    std::string cmd_output = exec(cmd.c_str());
 
     // Get the info from the cach into the method
     cmd = "cat " + cacheFolder + "/git_checkout_cache.txt";
-    std::string cmd_output = exec(cmd.c_str());
+    cmd_output = exec(cmd.c_str());
 
     // TODO(fredrik): the find should determine the commit id
     report rep;
@@ -100,13 +100,14 @@ report checkout(std::string sourceFolder, std::string cacheFolder, std::string c
 // Merge to the target branch and determine if it could be done
 report merge(std::string sourceFolder, std::string targetBranch)
 {
+    // Performe merge and take output
     std::string cmd = "git --git-dir " + sourceFolder + "/.git merge " + targetBranch;
     std::string cmd_output = exec(cmd.c_str());
 
     report rep;
-    if (cmd_output.find("Already up to date.") != std::string::npos)
+    if (cmd_output.find("Already up-to-date.") != std::string::npos)
     {
-        rep.message = "Merge went fine";
+        rep.message = "Merge went fine.";
         rep.errorcode = 0;
     }
     else
