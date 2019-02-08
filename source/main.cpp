@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#include "parser.h"
 
 constexpr sa_family_t IPv4 = AF_INET;
 constexpr sa_family_t IPv6 = AF_INET6;
@@ -116,7 +117,7 @@ int main(int argc, char* argv[])
     std::string address = "0.0.0.0";
     int port = 8080;
     int maximum_clients = 1;
-    size_t max_size_to_receive = 1024;
+    size_t max_size_to_receive = 100000;
 
     int listen_socket = ConnectServer(address, port, maximum_clients);
 
@@ -135,7 +136,33 @@ int main(int argc, char* argv[])
             throw std::runtime_error("Couldn't accept request from client. Errno: " + std::to_string(errno) + ".");
 
 
-        std::cout << "---- Receiving ----\n" <<  Receive(client_socket, max_size_to_receive) << std::endl;
+        std::string received_message = Receive(client_socket, max_size_to_receive);
+        std::cout << "---- Receiving ----\n" <<  received_message << std::endl;
+
+
+        try
+        {
+            unsigned i = 0;
+            for (; i < received_message.size(); ++i)
+                if (received_message[i] == '{')
+                    break;
+
+            std::cout << "JSON:\n" << received_message.substr(i, received_message.size()) << std::endl;
+
+            Parser parser(received_message.substr(i, received_message.size()));
+            std::cout << parser.get_clone_url() << std::endl;
+            std::cout << parser.get_action() << std::endl;
+            std::cout << parser.get_pr_time() << std::endl;
+            std::cout << parser.get_pr_title() << std::endl;
+            std::cout << parser.get_pr_user() << std::endl;
+            std::cout << parser.get_pr_body() << std::endl;
+            std::cout << parser.get_pr_url() << std::endl;
+        }
+        catch (const nlohmann::detail::parse_error& error)
+        {
+            std::cerr << "Couldn't read event." << std::endl;
+        }
+
 
 
         std::string message =
