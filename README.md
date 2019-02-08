@@ -16,3 +16,18 @@ There are now exicutables in the build folder one of them should be unittest, ex
 ```
 ci_test$ ./build/unittest
 ```
+
+## Contributions
+
+### Emma Good
+
+
+### Ted Klein Bergman
+
+
+### Yuanjue Li
+
+
+### Fredrik Pilhqvist
+* Created integrationTest function that compiles and tests a commit.
+* Documented compiling.
