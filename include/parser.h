@@ -1,12 +1,10 @@
 #include "json.hpp"
+#include <string>
 
 #ifndef WEBHOOK_PARSER_H
 #define WEBHOOK_PARSER_H
 
-//#include "json.hpp"
-
 using json = nlohmann::json;
-using namespace std;
 
 class Parser {
 
@@ -16,21 +14,21 @@ class Parser {
 public:
     Parser();
 
-    Parser(string json_message);
+    Parser(std::string json_message);
 
-    string get_action();
+    std::string get_action();
 
-    string get_pr_url();
+    std::string get_pr_url();
 
-    string get_clone_url();
+    std::string get_clone_url();
 
-    string get_pr_title();
+    std::string get_pr_title();
 
-    string get_pr_body();
+    std::string get_pr_body();
 
-    string get_pr_time();
+    std::string get_pr_time();
 
-    string get_pr_user();
+    std::string get_pr_user();
 };
 
 #endif //WEBHOOK_PARSER_H
