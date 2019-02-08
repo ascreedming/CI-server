@@ -21,7 +21,7 @@ TEST(cloning, correctly)
     std::string cmd_output = exec(cmd.c_str());
 
 
-    std::string repo = "git@github.com:Pihlqvist/ci_test.git";
+    std::string repo = "git@github.com:Naxaes/CI-server.git";
 
     report r = cloning(sourceFolder, cacheFolder, repo);
 
