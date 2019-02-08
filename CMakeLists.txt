@@ -28,7 +28,7 @@ enable_testing()
 add_subdirectory(${LIBRARIES}/googletest)
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-file(GLOB TEST_SOURCES ${TESTS}/*.cpp)
+file(GLOB TEST_SOURCES ${TESTS}/*.cpp source/integrationTest.cpp)
 
 add_executable(unittest ${TEST_SOURCES})
 target_include_directories(unittest PRIVATE ${LIBRARIES}/googletest/googletest/include)
