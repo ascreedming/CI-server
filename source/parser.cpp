@@ -1,8 +1,8 @@
 #include "parser.h"
 #include <iostream>
+#include <string>
 
 using json = nlohmann::json;
-using namespace std;
 
 
     json test = R"({
@@ -204,41 +204,41 @@ using namespace std;
         this->message = test;
     }
     // Initialize with a given string
-    Parser::Parser(string json_message){
+    Parser::Parser(std::string json_message){
         this->message = json::parse(json_message);
     }
 
     // Return the pull request action (opened, edited, closed, merged, etc)
-    string Parser::get_action(){
+    std::string Parser::get_action(){
         return this->message["action"];
     }
 
     // Returns the url of the pull request
-    string Parser::get_pr_url(){
+    std::string Parser::get_pr_url(){
         return this->message["pull_request"]["url"];
     }
 
     // Returns the clone url of the repo
-    string Parser::get_clone_url(){
+    std::string Parser::get_clone_url(){
         return this->message["pull_request"]["head"]["repo"]["clone_url"];
     }
 
     // Returns the title of the pull request
-    string Parser::get_pr_title(){
+    std::string Parser::get_pr_title(){
         return this->message["pull_request"]["title"];
     }
 
     // Returns the body of the pull request
-    string Parser::get_pr_body(){
+    std::string Parser::get_pr_body(){
         return this->message["pull_request"]["body"];
     }
 
     // Returns the time and date that the pull request was created
-    string Parser::get_pr_time(){
+    std::string Parser::get_pr_time(){
         return this->message["pull_request"]["created_at"];
     }
 
     // Returns the username of the creator of the pull request
-    string Parser::get_pr_user(){
+    std::string Parser::get_pr_user(){
         return this->message["pull_request"]["user"]["login"];
     }

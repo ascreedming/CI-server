@@ -3,13 +3,12 @@
 #include <json.hpp>
 
 using json = nlohmann::json;
-using namespace std;
 
 
 // Test file to test the functions in the Parser class
 
 // Help variable
-string test_string = R"V0G0N(
+std::string test_string = R"V0G0N(
     {
       "action": "closed",
       "pull_request": {
