@@ -8,11 +8,11 @@ First running cmake to construct a Makefile
 ```
 ci_test$ cmake -B./build -H.
 ```
-Secondly run the make file to create exicutables
+Secondly run the make file to create executables
 ```
 ci_test$ make -C ./build
 ```
-There are now exicutables in the build folder one of them should be unittest, example of a exicutable being ran.
+There are now executables in the build folder one of them should be unittest, example of a executable being ran.
 ```
 ci_test$ ./build/unittest
 ```
