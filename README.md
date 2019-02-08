@@ -20,7 +20,7 @@ ci_test$ ./build/unittest
 ## Contributions
 
 ### Emma Good
-
+* Created the JSON parser class that extracts data from the HTTP payload.
 
 ### Ted Klein Bergman
 
