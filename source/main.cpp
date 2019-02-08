@@ -135,7 +135,21 @@ int main(int argc, char* argv[])
             throw std::runtime_error("Couldn't accept request from client. Errno: " + std::to_string(errno) + ".");
 
 
-        std::cout << Receive(client_socket, max_size_to_receive) << std::endl;
+        std::cout << "---- Receiving ----\n" <<  Receive(client_socket, max_size_to_receive) << std::endl;
+
+
+        std::string message =
+                "HTTP/1.1 200 OK\n"
+                "Content-Length: 12\n"
+                "Connection: close\n"
+                "Content-Type: text/html\n"
+                "\n"
+                "Hello world!";
+
+        std::cout << "---- Sending ----\n" << message << std::endl;
+
+        Send(client_socket, message);
+
     }
 
 
