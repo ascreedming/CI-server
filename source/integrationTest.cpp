@@ -36,7 +36,7 @@ report cloning(std::string sourceFolder, std::string cacheFolder, std::string re
 {
     // Clone the repo and save the output to a cache
     std::string cmd = "git clone --progress " + repo + " " + sourceFolder + " 2>  " + cacheFolder + "/git_clone_cache.txt";
-    system(cmd.c_str());
+    int syscode = system(cmd.c_str());
 
     // Get the info from the cach into the method
     cmd = "cat " + cacheFolder + "/git_clone_cache.txt";
@@ -44,7 +44,7 @@ report cloning(std::string sourceFolder, std::string cacheFolder, std::string re
 
     // Determine if the cloning went alright
     report rep;
-    if (cmd_output.find("Checking connectivity... done.") != std::string::npos)
+    if (syscode == 0/*cmd_output.find("Checking connectivity... done.") != std::string::npos*/)
     {
         rep.message = "Cloning done.";
         rep.errorcode = 0;
@@ -68,7 +68,8 @@ report checkout(std::string sourceFolder, std::string cacheFolder, std::string c
 {
     // Checkout commit and save output to cache
     std::string cmd = "git --git-dir " + sourceFolder + "/.git checkout " + commit + " 2>  " + cacheFolder + "/git_checkout_cache.txt";
-    std::string cmd_output = exec(cmd.c_str());
+    std::string cmd_output = ""; 
+    int syscode = system(cmd.c_str());
 
     // Get the info from the cach into the method
     cmd = "cat " + cacheFolder + "/git_checkout_cache.txt";
@@ -76,7 +77,7 @@ report checkout(std::string sourceFolder, std::string cacheFolder, std::string c
 
     // TODO(fredrik): the find should determine the commit id
     report rep;
-    if (cmd_output.find("HEAD is now at") != std::string::npos)
+    if (syscode == 0 /*cmd_output.find("HEAD is now at") != std::string::npos*/)
     {
         rep.message = "We could set HEAD to commit.";
         rep.errorcode = 0;
@@ -96,10 +97,11 @@ report merge(std::string sourceFolder, std::string targetBranch)
 {
     // Performe merge and take output
     std::string cmd = "git --git-dir " + sourceFolder + "/.git merge " + targetBranch;
-    std::string cmd_output = exec(cmd.c_str());
+    std::string cmd_output = "";
+    int syscode = system(cmd.c_str());
 
     report rep;
-    if (cmd_output.find("Already up-to-date.") != std::string::npos)
+    if (syscode == 0/*cmd_output.find("Already up-to-date.") != std::string::npos*/)
     {
         rep.message = "Merge went fine.";
         rep.errorcode = 0;
